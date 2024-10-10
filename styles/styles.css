@@ -1,0 +1,192 @@
+@import "base.css";
+@import "components.css";
+@import "layout.css";
+@import "responsive.css";
+@import "../assets/font-awesome/css/all.min.css";
+
+/* App Bar */
+.app-bar {
+  background-color: var(--md-sys-color-surface);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.app-bar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.app-bar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  margin: 0;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-link {
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.5s ease, background-color 0.5s ease;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.nav-link:hover {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.welcome-message {
+  color: var(--md-sys-color-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.5s ease, background-color 0.5s ease;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.welcome-message:hover {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Hero Section */
+.hero {
+  padding: 120px 0 80px;
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.hero .container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-title {
+  font-size: 3rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 16px;
+  line-height: 1.2; /* Thêm line-height cụ thể */
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 32px;
+  line-height: 1.4; /* Thêm line-height cụ thể */
+}
+
+.hero-image {
+  flex: 1;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.products {
+  padding: 90px 0 80px;
+  background-color: var(--md-sys-color-surface);
+}
+
+/* Features Section */
+.features {
+  padding: 80px 0;
+  background-color: var(--md-sys-color-background);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--md-sys-color-on-background);
+  margin-bottom: 30px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.feature-card {
+  background-color: var(--md-sys-color-surface);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 12px;
+}
+
+/* CTA Section */
+.cta {
+  background-color: var(--md-sys-color-secondary-container);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 2.5rem;
+  color: var(--md-sys-color-on-secondary-container);
+  margin-bottom: 16px;
+}
+
+.cta-text {
+  font-size: 1.25rem;
+  color: var(--md-sys-color-on-secondary-container);
+  margin-bottom: 32px;
+}
+
+/* Footer */
+footer {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.menu-toggle i {
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle i.fa-times {
+  transform: rotate(180deg);
+}
