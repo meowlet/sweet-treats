@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cửa hàng - Sweet Treats</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="../styles/responsive.css" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <div class="container">
+        <h1 class="app-bar-title">Sweet Treats</h1>
+        <nav>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <ul class="nav-menu"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="products">
+        <div class="container">
+          <h1>Sản phẩm của chúng tôi</h1>
+
+          <div class="search-bar">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Tìm kiếm sản phẩm..."
+            />
+          </div>
+
+          <div class="filters">
+            <select id="category-filter">
+              <option value="">Tất cả danh mục</option>
+              <option value="banh-kem">Bánh kem</option>
+              <option value="banh-quy">Bánh quy</option>
+              <option value="keo">Kẹo</option>
+              <option value="chocolate">Chocolate</option>
+            </select>
+            <select id="price-filter">
+              <option value="">Tất cả giá</option>
+              <option value="0-50000">Dưới 50.000đ</option>
+              <option value="50000-100000">50.000đ - 100.000đ</option>
+              <option value="100000-200000">100.000đ - 200.000đ</option>
+              <option value="200000-">Trên 200.000đ</option>
+            </select>
+            <select id="sort-option">
+              <option value="name-asc">Tên A-Z</option>
+              <option value="name-desc">Tên Z-A</option>
+              <option value="price-asc">Giá tăng dần</option>
+              <option value="price-desc">Giá giảm dần</option>
+            </select>
+          </div>
+
+          <div id="product-list" class="product-grid"></div>
+
+          <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be added here dynamically -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2023 Sweet Treats. Tất cả quyền được bảo lưu.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="../scripts/main.js"></script>
+  </body>
+</html>
