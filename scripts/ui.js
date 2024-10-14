@@ -1,19 +1,25 @@
 // Import necessary functions from other modules
-import { isLoggedIn, getCurrentUser, logout } from "./auth.js";
+import { getCurrentUser } from "./auth.js";
 
 // Define navigation items
 const navItems = {
   loggedOut: [
     { href: "/index.html", text: "Trang chủ" },
     { href: "/pages/shop.html", text: "Cửa hàng" },
+    { href: "/pages/about.html", text: "Giới thiệu" },
     { href: "/pages/sign-in.html", text: "Đăng nhập" },
     { href: "/pages/sign-up.html", text: "Đăng ký" },
   ],
   loggedIn: [
     { href: "/index.html", text: "Trang chủ" },
     { href: "/pages/shop.html", text: "Cửa hàng" },
-    { href: "/pages/cart.html", text: "Giỏ hàng" },
-    { href: "#", text: "Chào, {username}", class: "welcome-message" },
+    { href: "/pages/about.html", text: "Giới thiệu" },
+    { href: "/pages/cart.html", text: "Giỏ hàng", id: "cart-link" },
+    {
+      href: "/pages/me.html",
+      text: "Chào, {username}",
+      class: "welcome-message",
+    },
   ],
 };
 
@@ -55,8 +61,23 @@ export function updateNavMenu() {
   const navMenu = document.querySelector(".nav-menu");
   if (!navMenu) return;
 
-  const items = isLoggedIn() ? navItems.loggedIn : navItems.loggedOut;
+  // Add href for app-bar-title
+  const appBarTitle = document.querySelector(".app-bar-title");
+  if (appBarTitle) {
+    // Tạo một phần tử a mới
+    const linkElement = document.createElement("a");
+    linkElement.href = "/index.html";
+
+    // Di chuyển nội dung của h1 vào phần tử a
+    linkElement.innerHTML = appBarTitle.innerHTML;
+
+    // Xóa nội dung cũ của h1 và thêm phần tử a vào
+    appBarTitle.innerHTML = "";
+    appBarTitle.appendChild(linkElement);
+  }
+
   const currentUser = getCurrentUser();
+  const items = currentUser ? navItems.loggedIn : navItems.loggedOut;
 
   navMenu.innerHTML = items
     .map((item) => {
@@ -68,6 +89,7 @@ export function updateNavMenu() {
       <a href="${item.href}" 
          ${item.onClick ? `onclick="${item.onClick}"` : ""}
          ${item.class ? `class="${item.class}"` : "class='nav-link'"}>
+         ${item.id ? `<span id="${item.id}"></span>` : ""}  
         ${text}
       </a>
     </li>`;
