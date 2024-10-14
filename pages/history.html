@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch sử mua hàng - Sweet Treats</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="../styles/responsive.css" />
+    <style>
+      .purchase-history {
+        padding: 120px 0 80px;
+        min-height: calc(100vh - 60px - 60px);
+      }
+      .purchase-item {
+        background-color: var(--md-sys-color-surface);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .purchase-date {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: var(--md-sys-color-primary);
+      }
+      .purchase-products {
+        margin-top: 10px;
+      }
+      .product-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .product-item:last-child {
+        border-bottom: none;
+      }
+      .product-name {
+        font-weight: 500;
+      }
+      .product-quantity {
+        color: var(--md-sys-color-on-surface-variant);
+      }
+      .product-status {
+        font-weight: 500;
+      }
+      .status-pending {
+        color: var(--md-sys-color-secondary);
+      }
+      .status-completed {
+        color: var(--md-sys-color-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-bar">
+      <div class="container">
+        <h1 class="app-bar-title">Sweet Treats</h1>
+        <nav>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <ul class="nav-menu"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="purchase-history">
+        <div class="container">
+          <h2 class="section-title">Lịch sử mua hàng</h2>
+          <div id="purchaseHistoryContainer"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Sweet Treats. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="../scripts/main.js"></script>
+
+    <script>
+      function getProductName(productId) {
+        const products = JSON.parse(localStorage.getItem("products"));
+        const product = products.find((p) => p.id == productId);
+        return product ? product.name : "Sản phẩm #" + productId;
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        const purchaseHistory = JSON.parse(
+          localStorage.getItem("purchaseHistory")
+        );
+        const purchaseHistoryContainer = document.getElementById(
+          "purchaseHistoryContainer"
+        );
+
+        if (purchaseHistory && purchaseHistory.length > 0) {
+          purchaseHistory.forEach((purchase) => {
+            const purchaseElement = document.createElement("div");
+            purchaseElement.className = "purchase-item";
+
+            const purchaseDate = new Date(purchase.date).toLocaleDateString(
+              "gb-UK",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            );
+
+            let purchaseContent = `
+              <div class="purchase-date">${purchaseDate}</div>
+              <div class="purchase-products">
+            `;
+
+            purchase.items.forEach((item) => {
+              purchaseContent += `
+                <div class="product-item">
+                  <span class="product-name">${getProductName(
+                    item.productId
+                  )}</span>
+                  <span class="product-quantity">Số lượng: ${
+                    item.quantity
+                  }</span>
+                  <span class="product-status status-${item.status}">
+                    ${
+                      item.status === "pending" ? "Đang xử lý" : "Đã hoàn thành"
+                    }
+                  </span>
+                </div>
+              `;
+            });
+
+            purchaseContent += `</div>`;
+            purchaseElement.innerHTML = purchaseContent;
+            purchaseHistoryContainer.appendChild(purchaseElement);
+          });
+        } else {
+          purchaseHistoryContainer.innerHTML =
+            "<p>Bạn chưa có lịch sử mua hàng nào.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -3,52 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Giỏ hàng - Sweet Treats</title>
-    <link rel="stylesheet" href="../styles/style.css" />
-    <link rel="stylesheet" href="../styles/responsive.css" />
-    <link rel="stylesheet" href="../styles/cart.css" />
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
   </head>
   <body>
     <header class="app-bar">
       <div class="container">
-        <h1 class="app-bar-title">Sweet Treats</h1>
+        <h1 class="app-bar-title">Giỏ hàng</h1>
         <nav>
-          <button class="menu-toggle" aria-label="Toggle menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-          </button>
           <ul class="nav-menu">
-            <li><a href="#" class="nav-link">Trang chủ</a></li>
-            <li><a href="#" class="nav-link">Sản phẩm</a></li>
-            <li><a href="#" class="nav-link">Về chúng tôi</a></li>
-            <li><a href="#" class="nav-link">Liên hệ</a></li>
-            <li><a href="pages/sign-in.html" class="nav-link">Đăng nhập</a></li>
-            <li><a href="pages/sign-up.html" class="nav-link">Đăng ký</a></li>
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li><a href="shop.html" class="nav-link">Cửa hàng</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <main>
-      <section class="cart-section">
-        <div class="container">
-          <h1>Giỏ hàng của bạn</h1>
-          <div id="cart-items"></div>
-          <div class="cart-summary">
-            <p>Tổng cộng: <span id="cart-total">0đ</span></p>
-            <button id="checkout-btn" disabled>Thanh toán</button>
-          </div>
+    <main class="cart-page">
+      <div class="container">
+        <h2 class="section-title">Giỏ hàng của bạn</h2>
+        <section id="cart-items">
+          <!-- Các mục trong giỏ hàng sẽ được thêm vào đây bằng JavaScript -->
+        </section>
+        <div id="cart-summary">
+          <p>Tổng cộng: <span id="cart-total">0 ₫</span></p>
+          <button id="checkout-btn" class="btn btn-primary">Thanh toán</button>
         </div>
-      </section>
+      </div>
     </main>
 
-    <footer>
-      <div class="container">
-        <p>&copy; 2024 Sweet Treats. Tất cả quyền được bảo lưu.</p>
-      </div>
-    </footer>
-
-    <script src="../scripts/main.js"></script>
+    <script type="module" src="../scripts/main.js"></script>
   </body>
 </html>

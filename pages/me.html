@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thông tin cá nhân - Sweet Treats</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="../styles/responsive.css" />
+    <style>
+      .profile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(
+          100vh - 60px - 60px
+        ); /* Trừ đi chiều cao của header và footer */
+      }
+      .profile-info {
+        text-align: center;
+        font-size: 1.5rem;
+      }
+      .profile-info p {
+        margin: 20px 0;
+      }
+      .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-bar">
+      <div class="container">
+        <h1 class="app-bar-title">Sweet Treats</h1>
+        <nav>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <ul class="nav-menu"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="profile">
+        <div class="container">
+          <h2 class="section-title">Thông tin cá nhân</h2>
+          <div class="profile-info">
+            <p><strong>Tên người dùng:</strong> <span id="username"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p>
+              <strong>Số sản phẩm đã mua:</strong>
+              <span id="purchaseCount"></span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Sweet Treats. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="../scripts/main.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const users = JSON.parse(localStorage.getItem("users"));
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        const purchaseHistory = JSON.parse(
+          localStorage.getItem("purchaseHistory")
+        );
+
+        const user = users.find((u) => u.id === currentUser.userId);
+        if (user) {
+          document.getElementById("username").textContent = user.username;
+          document.getElementById("email").textContent = user.email;
+        }
+
+        const totalPurchases = purchaseHistory.reduce((total, purchase) => {
+          return (
+            total +
+            purchase.items.reduce(
+              (itemTotal, item) => itemTotal + item.quantity,
+              0
+            )
+          );
+        }, 0);
+        document.getElementById("purchaseCount").textContent = totalPurchases;
+
+        const purchaseHistoryElement =
+          document.getElementById("purchaseHistory");
+        purchaseHistory.forEach((purchase) => {
+          if (purchase.items.length > 0) {
+            const purchaseElement = document.createElement("div");
+            purchaseElement.className = "purchase-item";
+            purchaseElement.innerHTML = `
+                        <p><strong>Ngày mua:</strong> ${new Date(
+                          purchase.date
+                        ).toLocaleDateString("vi-VN")}</p>
+                        <p><strong>Số lượng sản phẩm:</strong> ${purchase.items.reduce(
+                          (total, item) => total + item.quantity,
+                          0
+                        )}</p>
+                    `;
+            purchaseHistoryElement.appendChild(purchaseElement);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
