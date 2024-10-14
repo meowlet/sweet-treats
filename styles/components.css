@@ -280,3 +280,131 @@
   background-color: var(--md-sys-color-error-container);
   color: var(--md-sys-color-on-error-container);
 }
+
+#clear-filters {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Cart styles */
+.cart-page {
+  padding: 40px 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  min-height: 140px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.cart-item-checkbox {
+  margin-right: 15px;
+  transform: scale(1.5);
+}
+
+.cart-item-image-container {
+  width: 140px; /* Thay đổi kích thước này nếu cần */
+  height: 140px; /* Giữ tỷ lệ 1:1 */
+  margin-right: 20px;
+  overflow: hidden; /* Thêm dòng này */
+}
+
+.cart-item img {
+  width: 100px;
+  height: 100px;
+  align-self: flex-start;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.cart-item-details h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.cart-item-details p {
+  margin: 5px 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.quantity-btn {
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  margin: 0 10px;
+  padding: 5px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+}
+
+.remove-item-btn {
+  margin-left: 15px;
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border: none;
+  border-radius: 9999px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  transform: translateY(-50%); /* Add this line */
+}
+
+.remove-item-btn:hover {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+#cart-summary {
+  margin-top: 20px;
+  text-align: right;
+}
+
+#cart-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--md-sys-color-primary);
+}
+
+#checkout-btn {
+  margin-top: 10px;
+}

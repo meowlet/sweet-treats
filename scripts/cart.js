@@ -1,109 +1,216 @@
-// Import necessary functions from other modules
-import { showMessage } from "./ui.js";
-import { getCurrentUser } from "./auth.js";
-import { getProducts, updateProductStock } from "./shop.js";
 import { formatCurrency } from "./utils.js";
+import { CartStatus } from "./shop.js";
 
-let cart = {};
+let cart = [];
+let products = [];
+let purchaseHistory = []; // Add this line to store purchase history
 
-// Initialize cart
 export function initCart() {
-  loadCartFromStorage();
+  loadCartAndProducts();
+  loadPurchaseHistory(); // Add this line to load purchase history
   renderCart();
-}
-
-// Add a product to the cart
-export function addToCart(productId) {
-  const product = getProducts().find((p) => p.id === productId);
-  if (product && product.stock > 0) {
-    if (cart[productId]) {
-      cart[productId].quantity++;
-    } else {
-      cart[productId] = { ...product, quantity: 1 };
-    }
-    updateProductStock(productId, product.stock - 1);
-    saveCartToStorage();
-    renderCart();
-    showMessage("Product added to cart", "success");
-  } else {
-    showMessage("Product is out of stock", "error");
+  if (document.getElementById("checkout-btn")) {
+    document
+      .getElementById("checkout-btn")
+      .addEventListener("click", handleCheckout);
   }
 }
 
-// Remove a product from the cart
-export function removeFromCart(productId) {
-  if (cart[productId]) {
-    const product = getProducts().find((p) => p.id === productId);
-    updateProductStock(productId, product.stock + cart[productId].quantity);
-    delete cart[productId];
-    saveCartToStorage();
-    renderCart();
-    showMessage("Product removed from cart", "success");
-  }
+function loadCartAndProducts() {
+  cart = JSON.parse(localStorage.getItem("carts")) || [];
+  products = JSON.parse(localStorage.getItem("products")) || [];
 }
 
-// Update the quantity of a product in the cart
-export function updateCartQuantity(productId, quantity) {
-  const product = getProducts().find((p) => p.id === productId);
-  const currentQuantity = cart[productId] ? cart[productId].quantity : 0;
-  const quantityDiff = quantity - currentQuantity;
-
-  if (product.stock >= quantityDiff) {
-    cart[productId].quantity = quantity;
-    updateProductStock(productId, product.stock - quantityDiff);
-    saveCartToStorage();
-    renderCart();
-    showMessage("Cart updated", "success");
-  } else {
-    showMessage("Not enough stock", "error");
-  }
+function loadPurchaseHistory() {
+  purchaseHistory = JSON.parse(localStorage.getItem("purchaseHistory")) || [];
 }
 
-// Render the cart
 function renderCart() {
   const cartContainer = document.getElementById("cart-items");
-  if (!cartContainer) return;
+  const checkoutBtn = document.getElementById("checkout-btn");
+  if (!cartContainer || !checkoutBtn) return;
 
   cartContainer.innerHTML = "";
   let total = 0;
+  let hasSelectedItems = false;
 
-  Object.values(cart).forEach((item) => {
-    const itemElement = document.createElement("div");
-    itemElement.className = "cart-item";
-    itemElement.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <div>
-        <h3>${item.name}</h3>
-        <p>Price: ${formatCurrency(item.price)}</p>
-        <p>Quantity: ${item.quantity}</p>
-        <button onclick="removeFromCart(${item.id})">Remove</button>
-      </div>
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p>Chưa có sản phẩm trong giỏ hàng</p>";
+    checkoutBtn.disabled = true;
+  } else {
+    cart.forEach((item, index) => {
+      const product = products.find((p) => p.id.toString() === item.productId);
+      if (product) {
+        const itemElement = createCartItemElement(item, product, index);
+        cartContainer.appendChild(itemElement);
+        if (item.selected) {
+          total += product.price * item.quantity;
+          hasSelectedItems = true;
+        }
+      }
+    });
+
+    checkoutBtn.disabled = !hasSelectedItems;
+  }
+
+  updateTotal(total);
+  updateProductQuantities();
+}
+
+function createCartItemElement(item, product, index) {
+  const itemElement = document.createElement("div");
+  itemElement.className = "cart-item";
+  itemElement.innerHTML = `
+        <input type="checkbox" class="cart-item-checkbox" data-index="${index}" ${
+    item.selected ? "checked" : ""
+  }>
+        <img src="${product.image}" alt="${product.name}">
+        <div class="cart-item-details">
+            <h3>${product.name}</h3>
+            <p>Giá: ${formatCurrency(product.price)}</p>
+            <div class="quantity-control">
+                <button class="quantity-btn decrease" data-index="${index}">-</button>
+                <input type="number" min="1" max="${product.stock}" value="${
+    item.quantity
+  }" data-index="${index}" class="quantity-input">
+                <button class="quantity-btn increase" data-index="${index}">+</button>
+            </div>
+            <p>Tổng: ${formatCurrency(product.price * item.quantity)}</p>
+        </div>
+        <button class="remove-item-btn" data-index="${index}">Xóa</button>
     `;
-    cartContainer.appendChild(itemElement);
-    total += item.price * item.quantity;
+
+  const quantityInput = itemElement.querySelector(".quantity-input");
+  const decreaseBtn = itemElement.querySelector(".decrease");
+  const increaseBtn = itemElement.querySelector(".increase");
+
+  quantityInput.addEventListener("change", handleQuantityChange);
+  decreaseBtn.addEventListener("click", handleDecrease);
+  increaseBtn.addEventListener("click", handleIncrease);
+  itemElement
+    .querySelector(".cart-item-checkbox")
+    .addEventListener("change", handleItemSelection);
+  itemElement
+    .querySelector(".remove-item-btn")
+    .addEventListener("click", handleRemoveItem);
+
+  return itemElement;
+}
+
+function handleQuantityChange(event) {
+  const index = event.target.dataset.index;
+  let newQuantity = parseInt(event.target.value);
+  const product = products.find(
+    (p) => p.id.toString() === cart[index].productId
+  );
+
+  // Xử lý các trường hợp không hợp lệ
+  if (isNaN(newQuantity) || newQuantity < 1) {
+    newQuantity = 1;
+  } else if (newQuantity > product.stock) {
+    newQuantity = product.stock;
+  }
+
+  // Cập nhật giá trị trong input
+  event.target.value = newQuantity;
+
+  // Cập nhật giỏ hàng
+  cart[index].quantity = newQuantity;
+  saveCartAndRender();
+}
+
+function handleItemSelection(event) {
+  const index = event.target.dataset.index;
+  cart[index].selected = event.target.checked;
+  saveCartAndRender();
+}
+
+function handleRemoveItem(event) {
+  const index = event.target.dataset.index;
+  cart.splice(index, 1);
+  saveCartAndRender();
+}
+
+function handleCheckout() {
+  const selectedItems = cart.filter((item) => item.selected);
+
+  if (selectedItems.length === 0) {
+    alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+    return;
+  }
+
+  // Cập nhật số lượng sản phẩm
+  selectedItems.forEach((item) => {
+    const product = products.find((p) => p.id.toString() === item.productId);
+    if (product) {
+      product.stock -= item.quantity;
+    }
   });
 
+  // Add selected items to purchase history
+  purchaseHistory.push({
+    date: new Date().toISOString(),
+    items: selectedItems,
+  });
+
+  // Remove selected items from cart
+  cart = cart.filter((item) => !item.selected);
+
+  // Save updated cart, products, and purchase history
+  localStorage.setItem("carts", JSON.stringify(cart));
+  localStorage.setItem("products", JSON.stringify(products));
+  localStorage.setItem("purchaseHistory", JSON.stringify(purchaseHistory));
+
+  renderCart();
+  alert("Thanh toán thành công!");
+}
+
+function updateTotal(total) {
   const totalElement = document.getElementById("cart-total");
   if (totalElement) {
     totalElement.textContent = formatCurrency(total);
   }
 }
 
-// Load cart from local storage
-function loadCartFromStorage() {
-  const currentUser = getCurrentUser();
-  if (currentUser) {
-    const allCarts = JSON.parse(localStorage.getItem("carts")) || {};
-    cart = allCarts[currentUser.username] || {};
-  }
+function saveCartAndRender() {
+  localStorage.setItem("carts", JSON.stringify(cart));
+  renderCart();
 }
 
-// Save cart to local storage
-function saveCartToStorage() {
-  const currentUser = getCurrentUser();
-  if (currentUser) {
-    const allCarts = JSON.parse(localStorage.getItem("carts")) || {};
-    allCarts[currentUser.username] = cart;
-    localStorage.setItem("carts", JSON.stringify(allCarts));
-  }
+// Export các hàm cần thiết để sử dụng ở nơi khác nếu cần
+export { loadCartAndProducts, renderCart, handleCheckout };
+
+function handleDecrease(event) {
+  const index = event.target.dataset.index;
+  const input = event.target.nextElementSibling;
+  let newQuantity = parseInt(input.value) - 1;
+  if (newQuantity < 1) newQuantity = 1;
+  input.value = newQuantity;
+  handleQuantityChange({ target: input });
+}
+
+function handleIncrease(event) {
+  const index = event.target.dataset.index;
+  const input = event.target.previousElementSibling;
+  const product = products.find(
+    (p) => p.id.toString() === cart[index].productId
+  );
+  let newQuantity = parseInt(input.value) + 1;
+  if (newQuantity > product.stock) newQuantity = product.stock;
+  input.value = newQuantity;
+  handleQuantityChange({ target: input });
+}
+
+function updateProductQuantities() {
+  const productElements = document.querySelectorAll(".product");
+  productElements.forEach((element) => {
+    const productId = element.dataset.productId;
+    const product = products.find((p) => p.id.toString() === productId);
+    if (product) {
+      const quantityElement = element.querySelector(".product-quantity");
+      if (quantityElement) {
+        quantityElement.textContent = `Còn lại: ${product.stock}`;
+      }
+    }
+  });
 }
