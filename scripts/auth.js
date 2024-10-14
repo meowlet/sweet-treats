@@ -1,6 +1,11 @@
 // Import necessary functions from other modules
 import { showMessage } from "./ui.js";
-import { validateEmail } from "./utils.js";
+import {
+  validateEmail,
+  validateUsername,
+  validatePassword,
+  validateConfirmPassword,
+} from "./utils.js";
 
 // Initialize authentication related elements and events
 export function initAuth() {
@@ -53,6 +58,9 @@ function handleSignIn(e) {
   );
 
   if (user) {
+    // Set current user
+    localStorage.setItem("currentUser", JSON.stringify({ userId: user.id }));
+
     showMessage("Đăng nhập thành công!", "success");
   } else {
     showMessage(
@@ -81,52 +89,87 @@ function handleSignUp(e) {
   if (!username) {
     showFieldError("username", "Vui lòng nhập tên đăng nhập");
     hasError = true;
+  } else if (!validateUsername(username)) {
+    showFieldError(
+      "username",
+      "Username phải có từ 3 đến 16 ký tự, chỉ chứa chữ cái viết thường, số và dấu gạch dưới"
+    );
+    hasError = true;
   }
   if (!email) {
     showFieldError("email", "Vui lòng nhập email");
     hasError = true;
   } else if (!validateEmail(email)) {
-    showFieldError("email", "Vui lòng nhập một địa chỉ email hợp lệ");
+    showFieldError("email", "Email không hợp lệ");
     hasError = true;
   }
   if (!password) {
     showFieldError("password", "Vui lòng nhập mật khẩu");
     hasError = true;
+  } else if (!validatePassword(password)) {
+    showFieldError(
+      "password",
+      "Mật khẩu phải từ 8 ký tự trở lên, chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt"
+    );
+    hasError = true;
   }
   if (!confirmPassword) {
     showFieldError("confirmPassword", "Vui lòng xác nhận mật khẩu");
     hasError = true;
-  } else if (password !== confirmPassword) {
+  } else if (!validateConfirmPassword(password, confirmPassword)) {
     showFieldError("confirmPassword", "Mật khẩu không khớp");
     hasError = true;
   }
   if (hasError) return;
 
-  // Check if email already exists
+  // Check if email or username already exists
   const users = JSON.parse(localStorage.getItem("users") || "[]");
   if (users.some((u) => u.email === email)) {
     showFieldError("email", "Email đã được sử dụng");
     return;
   }
+  if (users.some((u) => u.username === username)) {
+    showFieldError("username", "Tên đăng nhập đã được sử dụng");
+    return;
+  }
+
+  // Generate new userId
+  const userId = users.length;
 
   // Add new user
-  users.push({ username, email, password });
+  users.push({ id: userId, username, email, password });
   localStorage.setItem("users", JSON.stringify(users));
 
-  showMessage("Registration successful! Please sign in.", "success");
+  showMessage("Đăng ký thành công! Vui lòng đăng nhập.", "success");
   setTimeout(() => {
     window.location.href = "sign-in.html";
   }, 2000);
 }
 
-// Check if user is logged in
-export function isLoggedIn() {
-  return localStorage.getItem("isLoggedIn") === "true";
-}
-
 // Get current user information
 export function getCurrentUser() {
-  return JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserData = JSON.parse(localStorage.getItem("currentUser"));
+
+  // Kiểm tra xem currentUserData có tồn tại và có thuộc tính userId không
+  if (!currentUserData || !("userId" in currentUserData)) {
+    console.error(
+      "Dữ liệu người dùng hiện tại không hợp lệ trong localStorage"
+    );
+    return null;
+  }
+
+  const currentUserId = currentUserData.userId;
+
+  // Query user from local storage
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+  const user = users.find((u) => u.id === currentUserId);
+
+  if (!user) {
+    console.error("Không tìm thấy người dùng trong localStorage");
+    return null;
+  }
+
+  return user;
 }
 
 // Log out the current user
@@ -139,7 +182,7 @@ export function logout() {
 
 // Check login status and update UI accordingly
 function checkLoginStatus() {
-  if (isLoggedIn()) {
+  if (getCurrentUser()) {
     // Update UI for logged in user
     const currentUser = getCurrentUser();
     document
