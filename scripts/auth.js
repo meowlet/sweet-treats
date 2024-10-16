@@ -62,6 +62,8 @@ function handleSignIn(e) {
     localStorage.setItem("currentUser", JSON.stringify({ userId: user.id }));
 
     showMessage("Đăng nhập thành công!", "success");
+
+    window.location.href = "/index.html";
   } else {
     showMessage(
       "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.",
