@@ -182,6 +182,19 @@
   transition: background-color 0.3s ease;
 }
 
+.product-description {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #666;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  line-clamp: 2; /* Add this line */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .add-to-cart-btn:hover {
   background-color: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
