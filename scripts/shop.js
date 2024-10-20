@@ -138,7 +138,7 @@ function checkUserLoggedIn() {
 // Show login popup
 function showLoginPopup() {
   alert("Vui lòng đăng nhập trước khi mua hàng");
-  window.location.href = "login.html";
+  window.location.href = "/pages/sign-in.html";
 }
 
 // Search products

@@ -16,12 +16,22 @@ const navItems = {
     { href: "/pages/about.html", text: "Giới thiệu" },
     { href: "/pages/cart.html", text: "Giỏ hàng", id: "cart-link" },
     {
-      href: "/pages/me.html",
+      href: "#",
       text: "Chào, {username}",
-      class: "welcome-message",
+      class: "welcome-message dropdown",
+      dropdown: [
+        { href: "/pages/me.html", text: "Trang cá nhân" },
+        { href: "#", text: "Đăng xuất", onClick: "logout()" },
+      ],
     },
   ],
 };
+
+// Sign out function
+function logout() {
+  localStorage.removeItem("currentUser");
+  updateNavMenu();
+}
 
 // Banner rotation
 const bannerContainer = document.querySelector(".banner-container");
@@ -101,19 +111,73 @@ export function updateNavMenu() {
   navMenu.innerHTML = items
     .map((item) => {
       let text = item.text;
-      if (item.class === "welcome-message" && currentUser) {
+      if (item.class && item.class.includes("welcome-message") && currentUser) {
         text = text.replace("{username}", currentUser.username);
       }
-      return `<li>
-      <a href="${item.href}" 
-         ${item.onClick ? `onclick="${item.onClick}"` : ""}
-         ${item.class ? `class="${item.class}"` : "class='nav-link'"}>
-         ${item.id ? `<span id="${item.id}"></span>` : ""}  
-        ${text}
-      </a>
-    </li>`;
+
+      if (item.dropdown) {
+        return `
+          <li class="dropdown">
+            <a href="${item.href}" class="${item.class || "nav-link"}">
+              ${text}
+              <i class="fas fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              ${item.dropdown
+                .map(
+                  (dropdownItem) => `
+                <li>
+                  <a href="${dropdownItem.href}" 
+                     ${
+                       dropdownItem.onClick
+                         ? `onclick="${dropdownItem.onClick}; event.stopPropagation();"`
+                         : ""
+                     }>
+                    ${dropdownItem.text}
+                  </a>
+                </li>
+              `
+                )
+                .join("")}
+            </ul>
+          </li>
+        `;
+      } else {
+        return `
+          <li>
+            <a href="${item.href}" 
+               ${item.onClick ? `onclick="${item.onClick}"` : ""}
+               ${item.class ? `class="${item.class}"` : "class='nav-link'"}>
+               ${item.id ? `<span id="${item.id}"></span>` : ""}  
+              ${text}
+            </a>
+          </li>
+        `;
+      }
     })
     .join("");
+
+  // Add event listener for dropdown
+  const dropdowns = document.querySelectorAll(".dropdown");
+  dropdowns.forEach((dropdown) => {
+    dropdown.addEventListener("click", function (e) {
+      e.preventDefault();
+      this.querySelector(".dropdown-menu").classList.toggle("show");
+    });
+
+    // Add event listener for dropdown items
+    const dropdownItems = dropdown.querySelectorAll(".dropdown-menu a");
+    dropdownItems.forEach((item) => {
+      item.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (this.getAttribute("onclick")) {
+          eval(this.getAttribute("onclick"));
+        } else {
+          window.location.href = this.getAttribute("href");
+        }
+      });
+    });
+  });
 }
 
 // Show message to user

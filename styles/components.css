@@ -421,3 +421,127 @@
 #checkout-btn {
   margin-top: 10px;
 }
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: var(--md-sys-color-surface);
+  border-radius: 8px;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.dropdown-menu li {
+  margin-bottom: 8px;
+}
+
+/* Responsive styles for mobile */
+@media screen and (max-width: 768px) {
+  .nav-menu {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: var(--md-sys-color-surface);
+    display: none;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-menu.show {
+    display: flex;
+  }
+
+  .nav-menu li {
+    margin: 10px 0;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    margin-top: 10px;
+  }
+
+  .dropdown-menu a {
+    padding: 8px 0;
+  }
+
+  .hamburger-menu {
+    display: block;
+    cursor: pointer;
+  }
+
+  .hamburger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--md-sys-color-on-surface);
+    margin: 5px 0;
+    transition: 0.4s;
+  }
+
+  /* Adjust other components for mobile */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cart-item-image-container {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .cart-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .remove-item-btn {
+    margin-top: 10px;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .dropdown-menu a:hover {
+    border-radius: 100000px;
+  }
+}
+
+/* Add styles for hamburger menu animation */
+.hamburger-menu.active span:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}

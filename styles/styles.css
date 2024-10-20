@@ -439,7 +439,7 @@ footer {
 
 .banner {
   width: 100%;
-  height: 50vh;
+  height: 100vh;
   overflow: hidden;
   position: relative;
 }
@@ -447,12 +447,13 @@ footer {
 .banner-container {
   display: flex;
   transition: transform 0.5s ease;
-  width: 400%; /* Điều chỉnh chiều rộng tương ứng với số lượng ảnh (4 ảnh = 400%) */
+  width: 400%; /* Giữ nguyên chiều rộng 400% cho 4 ảnh */
+  height: 100%; /* Đảm bảo container có chiều cao 100% */
 }
 
 .banner-image {
-  width: 25%; /* Mỗi ảnh chiếm 1/4 chiều rộng của container */
+  width: 25%; /* Giữ nguyên chiều rộng 25% cho mỗi ảnh */
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Đảm bảo ảnh lấp đầy container và có thể bị cắt */
   flex-shrink: 0;
 }

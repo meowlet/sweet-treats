@@ -63,7 +63,10 @@ function handleSignIn(e) {
 
     showMessage("Đăng nhập thành công!", "success");
 
-    window.location.href = "/index.html";
+    // Add delay before redirecting
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 2000); // Delay for 2 seconds
   } else {
     showMessage(
       "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.",
