@@ -23,6 +23,25 @@ const navItems = {
   ],
 };
 
+// Banner rotation
+const bannerContainer = document.querySelector(".banner-container");
+const bannerImages = document.querySelectorAll(".banner-image");
+let currentIndex = 0;
+const totalImages = bannerImages.length;
+
+function rotateBanner() {
+  currentIndex = (currentIndex + 1) % totalImages;
+  const offset = currentIndex * 25; // Mỗi ảnh chiếm 25% chiều rộng
+  bannerContainer.style.transform = `translateX(-${offset}%)`;
+}
+
+// Khởi tạo banner rotation
+function initBannerRotation() {
+  if (bannerContainer && bannerImages.length > 0) {
+    setInterval(rotateBanner, 3000);
+  }
+}
+
 // Initialize UI elements
 export function initUI() {
   const menuToggle = document.querySelector(".menu-toggle");
@@ -110,3 +129,6 @@ export function showMessage(message, type = "info") {
     messageElement.style.display = "none";
   }, 3000);
 }
+
+// Gọi hàm này khi trang web được tải
+document.addEventListener("DOMContentLoaded", initBannerRotation);

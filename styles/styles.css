@@ -414,3 +414,45 @@ footer {
     padding-right: 0;
   }
 }
+
+.marquee {
+  background-color: var(--md-sys-color-surface);
+  padding: 10px 0;
+  overflow: hidden;
+}
+
+.marquee p {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+.banner {
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-container {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 400%; /* Điều chỉnh chiều rộng tương ứng với số lượng ảnh (4 ảnh = 400%) */
+}
+
+.banner-image {
+  width: 25%; /* Mỗi ảnh chiếm 1/4 chiều rộng của container */
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
