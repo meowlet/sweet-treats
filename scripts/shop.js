@@ -21,9 +21,172 @@ export function initProducts() {
 function loadProductsFromStorage() {
   products = JSON.parse(localStorage.getItem("products")) || [];
   if (products.length === 0) {
-    // If no products in storage, initialize with some sample data
-    products = [];
-    saveProductsToStorage();
+    // If no products in storage, initialize with sample data
+    const products = [
+      {
+        id: 1,
+        name: "Bánh Chocolate",
+        price: 350000,
+        stock: 8,
+        image: "https://picsum.photos/seed/chocolate-cake/300/200",
+        category: "banh-kem",
+        description:
+          "Bánh kem chocolate mềm mịn với lớp kem tươi đậm đà, được phủ lớp socola Bỉ cao cấp. Thích hợp cho sinh nhật và các dịp đặc biệt.",
+      },
+      {
+        id: 2,
+        name: "Bánh quy Phô mai",
+        price: 75000,
+        stock: 0,
+        image: "https://picsum.photos/seed/cheese-cookies/300/200",
+        category: "banh-quy",
+        description:
+          "Bánh quy phô mai giòn tan với hương vị béo ngậy từ phô mai Cheddar thượng hạng, được nướng đến độ vàng hoàn hảo.",
+      },
+      {
+        id: 3,
+        name: "Kẹo dừa",
+        price: 25000,
+        stock: 0,
+        image: "https://picsum.photos/seed/coconut-candy/300/200",
+        category: "keo",
+        description:
+          "Kẹo dừa truyền thống được làm từ cơm dừa tươi nguyên chất, nước cốt dừa và đường mía, mang hương vị đậm đà của miền Tây Nam Bộ.",
+      },
+      {
+        id: 4,
+        name: "Bánh Tiramisu",
+        price: 400000,
+        stock: 7,
+        image: "https://picsum.photos/seed/tiramisu/300/200",
+        category: "banh-kem",
+        description:
+          "Bánh Tiramisu chuẩn vị Ý với lớp bánh gato thấm cà phê espresso, lớp kem mascarpone mềm mịn và bột cacao đậm đà.",
+      },
+      {
+        id: 5,
+        name: "Socola đen",
+        price: 120000,
+        stock: 4,
+        image: "https://picsum.photos/seed/dark-chocolate/300/200",
+        category: "chocolate",
+        description:
+          "Socola đen nguyên chất với hàm lượng cacao 70%, vị đắng đặc trưng và hậu vị ngọt tinh tế, được nhập khẩu từ Bỉ.",
+      },
+      {
+        id: 6,
+        name: "Bánh quy bơ",
+        price: 60000,
+        stock: 16,
+        image: "https://picsum.photos/seed/butter-cookies/300/200",
+        category: "banh-quy",
+        description:
+          "Bánh quy bơ thơm nức được làm từ bơ Pháp cao cấp, tan chảy trong miệng với độ giòn vừa phải.",
+      },
+      {
+        id: 7,
+        name: "Kẹo chanh",
+        price: 15000,
+        stock: 40,
+        image: "https://picsum.photos/seed/lemon-candy/300/200",
+        category: "keo",
+        description:
+          "Kẹo chanh với vị chua ngọt tự nhiên, được chiết xuất từ chanh tươi, giúp giải khát và làm mát cổ họng.",
+      },
+      {
+        id: 8,
+        name: "Bánh Red Velvet",
+        price: 380000,
+        stock: 12,
+        image: "https://picsum.photos/seed/red-velvet/300/200",
+        category: "banh-kem",
+        description:
+          "Bánh Red Velvet với màu đỏ quyến rũ, vị chocolate nhẹ nhàng, kết hợp với lớp kem cheese cream béo ngậy.",
+      },
+      {
+        id: 9,
+        name: "Socola sữa",
+        price: 100000,
+        stock: 18,
+        image: "https://picsum.photos/seed/milk-chocolate/300/200",
+        category: "chocolate",
+        description:
+          "Socola sữa mềm mịn với hương vị ngọt ngào, được làm từ sữa tươi và bột cacao chất lượng cao.",
+      },
+      {
+        id: 10,
+        name: "Bánh quy yến mạch",
+        price: 70000,
+        stock: 22,
+        image: "https://picsum.photos/seed/oatmeal-cookies/300/200",
+        category: "banh-quy",
+        description:
+          "Bánh quy yến mạch giàu chất xơ, ít đường, thích hợp cho người ăn kiêng và người yêu thích lối sống lành mạnh.",
+      },
+      {
+        id: 11,
+        name: "Kẹo bạc hà",
+        price: 20000,
+        stock: 35,
+        image: "https://picsum.photos/seed/mint-candy/300/200",
+        category: "keo",
+        description:
+          "Kẹo bạc hà the mát với tinh dầu bạc hà tự nhiên, giúp thơm miệng và tỉnh táo suốt ngày dài.",
+      },
+      {
+        id: 12,
+        name: "Bánh Cheesecake",
+        price: 420000,
+        stock: 9,
+        image: "https://picsum.photos/seed/cheesecake/300/200",
+        category: "banh-kem",
+        description:
+          "Bánh Cheesecake New York với phần đế bánh giòn tan, lớp kem cheese mềm mịn và béo ngậy, được nướng chậm để đạt độ hoàn hảo.",
+      },
+      {
+        id: 13,
+        name: "Socola trắng",
+        price: 110000,
+        stock: 16,
+        image: "https://picsum.photos/seed/white-chocolate/300/200",
+        category: "chocolate",
+        description:
+          "Socola trắng béo ngậy được làm từ bơ cacao, sữa và đường, mang đến hương vị ngọt ngào đặc trưng.",
+      },
+      {
+        id: 14,
+        name: "Bánh quy hạnh nhân",
+        price: 80000,
+        stock: 20,
+        image: "https://picsum.photos/seed/almond-cookies/300/200",
+        category: "banh-quy",
+        description:
+          "Bánh quy hạnh nhân giòn rụm với những miếng hạnh nhân thơm bùi, được nướng vàng đều và có độ giòn hoàn hảo.",
+      },
+      {
+        id: 15,
+        name: "Kẹo gum",
+        price: 18000,
+        stock: 45,
+        image: "https://picsum.photos/seed/gum/300/200",
+        category: "keo",
+        description:
+          "Kẹo gum với nhiều hương vị tự nhiên, không đường, giúp thơm miệng và bảo vệ răng miệng hiệu quả.",
+      },
+      {
+        id: 16,
+        name: "Bánh Mousse",
+        price: 360000,
+        stock: 11,
+        image: "https://picsum.photos/seed/mousse-cake/300/200",
+        category: "banh-kem",
+        description:
+          "Bánh Mousse mềm mịn như mây với lớp bánh gato mỏng, kết hợp với mousse chocolate Pháp cao cấp.",
+      },
+    ];
+    localStorage.setItem("products", JSON.stringify(products));
+    console.log("Successfully inserted into localStorage.");
+    console.log("Successfully inserted sample products into localStorage.");
   }
 }
 
