@@ -195,4 +195,7 @@ export function showMessage(message, type = "info") {
 }
 
 // Gọi hàm này khi trang web được tải
-document.addEventListener("DOMContentLoaded", initBannerRotation);
+document.addEventListener("DOMContentLoaded", () => {
+  initBannerRotation();
+  updateCount();
+});

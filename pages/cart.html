@@ -13,7 +13,6 @@
         <nav>
           <ul class="nav-menu">
             <li><a href="index.html" class="nav-link">Trang chủ</a></li>
-            <li><a href="shop.html" class="nav-link">Cửa hàng</a></li>
           </ul>
         </nav>
       </div>
@@ -22,12 +21,79 @@
     <main class="cart-page">
       <div class="container">
         <h2 class="section-title">Giỏ hàng của bạn</h2>
-        <section id="cart-items">
-          <!-- Các mục trong giỏ hàng sẽ được thêm vào đây bằng JavaScript -->
-        </section>
+        <section id="cart-items"></section>
         <div id="cart-summary">
           <p>Tổng cộng: <span id="cart-total">0 ₫</span></p>
+          <a href="history.html" class="btn btn-secondary">Order History</a>
           <button id="checkout-btn" class="btn btn-primary">Thanh toán</button>
+        </div>
+      </div>
+
+      <!-- Add modal HTML -->
+      <div id="checkout-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+          <div class="modal-header">
+            <h3>Shipping Information</h3>
+            <button class="modal-close-btn" aria-label="Close modal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-content">
+            <form id="shipping-form" class="form">
+              <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  required
+                  minlength="2"
+                  pattern="[A-Za-zÀ-ỹ\s]+"
+                  title="Please enter a valid name (letters and spaces only)"
+                />
+                <span class="error-message"
+                  >Please enter a valid name (minimum 2 characters, letters
+                  only)</span
+                >
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  required
+                  pattern="[0-9]{10}"
+                  title="Please enter a valid 10-digit phone number"
+                />
+                <span class="error-message"
+                  >Please enter a valid 10-digit phone number</span
+                >
+              </div>
+              <div class="form-group">
+                <label for="address">Shipping Address *</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  required
+                  minlength="10"
+                  title="Please enter your full shipping address"
+                ></textarea>
+                <span class="error-message"
+                  >Please enter a valid shipping address (minimum 10
+                  characters)</span
+                >
+              </div>
+              <div class="form-group">
+                <label for="note">Note (Optional)</label>
+                <textarea id="note" name="note"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Confirm Order
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </main>
