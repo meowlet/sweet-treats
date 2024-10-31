@@ -7,6 +7,7 @@ const navItems = {
     { href: "/index.html", text: "Trang chủ" },
     { href: "/pages/shop.html", text: "Cửa hàng" },
     { href: "/pages/about.html", text: "Giới thiệu" },
+    { href: "/pages/sitemap.html", text: "Sitemap" },
     { href: "/pages/sign-in.html", text: "Đăng nhập" },
     { href: "/pages/sign-up.html", text: "Đăng ký" },
   ],
@@ -14,6 +15,7 @@ const navItems = {
     { href: "/index.html", text: "Trang chủ" },
     { href: "/pages/shop.html", text: "Cửa hàng" },
     { href: "/pages/about.html", text: "Giới thiệu" },
+    { href: "/pages/sitemap.html", text: "Sitemap" },
     { href: "/pages/cart.html", text: "Giỏ hàng", id: "cart-link" },
     {
       href: "#",

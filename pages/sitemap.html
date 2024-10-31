@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sitemap - Sweet Treats</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="../styles/responsive.css" />
+    <style>
+      .sitemap {
+        padding: 120px 0 80px;
+        min-height: calc(100vh - 60px - 60px);
+        background-color: var(--md-sys-color-surface);
+        overflow-x: auto;
+      }
+
+      .tree-container {
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        min-width: 1000px;
+      }
+
+      .tree {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+
+      .node-content {
+        background-color: var(--md-sys-color-surface);
+        border: 2px solid var(--md-sys-color-outline);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        width: 180px;
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+
+      .node-children {
+        display: flex;
+        gap: 60px; /* Increased gap between siblings */
+        margin-top: 60px;
+        position: relative;
+        justify-content: center; /* Center children horizontally */
+        width: 100%;
+      }
+
+      /* Vertical line from parent to children container */
+      .node-children::before {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        width: 2px;
+        height: 30px;
+        background-color: var(--md-sys-color-outline);
+        transform: translateX(-50%); /* Center the line */
+      }
+
+      /* Horizontal line connecting children */
+      .node-children::after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%); /* Center the line */
+        width: calc(
+          100% - 180px
+        ); /* Adjust width based on node content width */
+        height: 2px;
+        background-color: var(--md-sys-color-outline);
+      }
+
+      /* Add vertical lines to each child */
+      .node-children .node::before {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        width: 2px;
+        height: 30px;
+        background-color: var(--md-sys-color-outline);
+        transform: translateX(-50%);
+      }
+
+      /* Hide lines for nodes without children */
+      .node:not(:has(.node-children))::before,
+      .node:not(:has(.node-children))::after {
+        display: none;
+      }
+
+      /* Hide the first level's vertical lines since they're duplicates */
+      .tree > .node > .node-children > .node::before {
+        display: none;
+      }
+
+      .node-link {
+        color: var(--md-sys-color-primary);
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .node-description {
+        font-size: 0.8rem;
+        color: var(--md-sys-color-on-surface-variant);
+      }
+
+      .node-content:hover {
+        background-color: var(--md-sys-color-primary-container);
+        border-color: var(--md-sys-color-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Single child centering */
+      .node-children:has(:only-child) {
+        justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+        .node-description {
+          display: none;
+        }
+
+        .node-content {
+          padding: 8px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-bar">
+      <div class="container">
+        <h1 class="app-bar-title">Sweet Treats</h1>
+        <nav>
+          <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <ul class="nav-menu"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="sitemap">
+        <div class="container">
+          <h2 class="section-title">Sitemap</h2>
+
+          <div class="tree-container">
+            <div class="tree">
+              <!-- Root node -->
+              <div class="node">
+                <div class="node-content">
+                  <a href="/index.html" class="node-link">Trang chủ</a>
+                  <div class="node-description">Main landing page</div>
+                </div>
+
+                <!-- Children of root -->
+                <div class="node-children">
+                  <!-- Shop branch -->
+                  <div class="node">
+                    <div class="node-content">
+                      <a href="/pages/shop.html" class="node-link">Cửa hàng</a>
+                      <div class="node-description">Browse products</div>
+                    </div>
+                    <div class="node-children">
+                      <div class="node">
+                        <div class="node-content">
+                          <a
+                            href="/pages/product-detail.html?id=3"
+                            class="node-link"
+                            >Chi tiết SP</a
+                          >
+                          <div class="node-description">Product details</div>
+                        </div>
+                      </div>
+                      <div class="node">
+                        <div class="node-content">
+                          <a href="/pages/cart.html" class="node-link"
+                            >Giỏ hàng</a
+                          >
+                          <div class="node-description">Shopping cart</div>
+                        </div>
+                        <div class="node-children">
+                          <div class="node">
+                            <div class="node-content">
+                              <a href="/pages/history.html" class="node-link"
+                                >Lịch sử</a
+                              >
+                              <div class="node-description">Order history</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- About branch -->
+                  <div class="node">
+                    <div class="node-content">
+                      <a href="/pages/about.html" class="node-link"
+                        >Giới thiệu</a
+                      >
+                      <div class="node-description">About us</div>
+                    </div>
+                  </div>
+
+                  <!-- User profile branch -->
+                  <div class="node">
+                    <div class="node-content">
+                      <a href="/pages/me.html" class="node-link"
+                        >Trang cá nhân</a
+                      >
+                      <div class="node-description">User profile</div>
+                    </div>
+                    <div class="node-children">
+                      <div class="node">
+                        <div class="node-content">
+                          <a href="/pages/sign-in.html" class="node-link"
+                            >Đăng nhập</a
+                          >
+                          <div class="node-description">User login</div>
+                        </div>
+                      </div>
+                      <div class="node">
+                        <div class="node-content">
+                          <a href="/pages/sign-up.html" class="node-link"
+                            >Đăng ký</a
+                          >
+                          <div class="node-description">User registration</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 Sweet Treats. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="../scripts/main.js"></script>
+  </body>
+</html>
